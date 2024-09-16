@@ -1,109 +1,96 @@
 #include <iostream>
 #include <vector>
-#include "biblioteca.hpp"
-// #include "usuarios.hpp"
+#include "biblioteca.cpp"
+#include "usuarios.cpp"
 using namespace std;
 #define TAM 50
 
 int main() {
-    int opcao;
-    cin >> opcao;
-    menu(opcao);
-
-    vector<Livro> acervo(TAM);
+    acervo.push_back({"O Senhor dos Anéis", "J.R.R. Tolkien", "Fantasia", 5, 1954, 1008});
+    acervo.push_back({"1984", "George Orwell", "Distopia", 5, 1949, 328});
+    acervo.push_back({"Dom Casmurro", "Machado de Assis", "Clássico", 5, 1899, 256});
     
-    Livro l1 = {"Nada de Novo no Front", "Erich Maria Remarque", "Romance", 1930, 220, 1, 0};
-    acervo.push_back(l1);
-
-    Livro l2 = {"Guerra Do Velho", "John Scalzi", "Ficção cientifica", 2016, 357, 1, 0};
-    acervo.push_back(l2);
-
-    Livro l3 = {"1984", "George Orwell", "Distopia", 1949, 328, 1, 0};
-    acervo.push_back(l3);
-
-    Livro l4 = {"Orgulho e Preconceito", "Jane Austen", "Romance", 1813, 432, 1, 0};
-    acervo.push_back(l4);
-
-    Livro l5 = {"O Senhor dos Anéis: A Sociedade do Anel", "J.R.R. Tolkien", "Fantasia", 1954, 423, 1, 0};
-    acervo.push_back(l5);
-
-    Livro l6 = {"A Revolução dos Bichos", "George Orwell", "Sátira", 1945, 112, 1, 0};
-    acervo.push_back(l6);
-
-    Livro l7 = {"Cem Anos de Solidão", "Gabriel García Márquez", "Realismo mágico", 1967, 417, 1, 0};
-    acervo.push_back(l7);
-
-    Livro l8 = {"O Sol é para Todos", "Harper Lee", "Drama", 1960, 281, 1, 0};
-    acervo.push_back(l8);
-
-    Livro l9 = {"O Código Da Vinci", "Dan Brown", "Thriller", 2003, 489, 1, 0};
-    acervo.push_back(l9);
-
-    Livro l10 = {"Matar um Rouxinol", "Harper Lee", "Drama", 1960, 281, 1, 0};
-    acervo.push_back(l10);
-
+    usuarios.push_back({"Alice", 25, {}, {}, 0.0});
+    usuarios.push_back({"João", 30, {}, {}, 0.0});
+    usuarios.push_back({"Carlos", 22, {}, {}, 0.0});    
+    
+    int opcao;
+    string criterio;
+    bool sair = false;
     do {
-        cout << "Escolha uma opção: ";
-        cin >> opcao;
-
+        cout << "Dia " << fecharDia << endl;
+        menu(opcao);
         switch (opcao) {
-        
+
             case 1:{
-              cout << "-Cadastrar Livro\n-";
-              cadastrarLivro(acervo);
-            break;
+                cadastrarLivro(acervo);
+                break;
             }
-            
+
             case 2:{
-                
+                cadastrarUsuario(usuarios);
                 break;
             }
-               
+
             case 3:{
-                
+                emprestarLivro(acervo, usuarios, criterio);
                 break;
             }
-               
+
             case 4:{
-                
+                devolverLivro(acervo, usuarios);
                 break;
             }
-               
-            case 5:{
-            string criterio;
-            cout << "-Pesquisar Livro\n-";
-            cin>> criterio;
-            pesquisarLivros(acervo);
-            break;
+
+            case 5:{   
+                cout << "Pesquisar por título, autor ou ano: "; 
+                cin.ignore();
+                getline(cin, criterio);
+                cout << "\n\n"; 
+                pesquisarLivros(acervo, criterio);
+                break;
             }
-                
+
+
             case 6:{
                 listagemDeLivros(acervo);
-              break;
+                break;
             }
-               
+
             case 7:{
-                
+                pesquisarLivrosPorUsuario(usuarios);
                 break;
             }
-               
+
             case 8:{
-                
+                relatorioDeEmprestimos(acervo, usuarios, fecharDia);  
                 break;
             }
-              
+
+            case 9:{
+                listarUsuarios(usuarios);
+                break;
+            }
+
+            case 10:{
+                fecharDia++; // Toda vez que o ADM fechar o dia essa função recebe +1 e será usada para para definir os limites de empréstimo.
+                aplicarMulta(usuarios, fecharDia);
+                break;
+            }
+
             case 0:{
-                
+                cout << "Saindo...";
+                sair = true;
                 break;
             }
-                
+
             default:{
-                
+                cout << "Opção errada! Digite novamente.";
                 break;
             }
             }
 
-    } while (opcao != 0);
+    } while (!sair);
 
     return 0;
 }
